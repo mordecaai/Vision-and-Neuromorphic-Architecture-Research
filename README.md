@@ -1,2 +1,5 @@
 # Vision-and-Neuromorphic-Architecture-Research
-Project for Arch Lab under Prof Sherwood.
+Project for Arch Lab under Prof Sherwood. The following code is a mix of computer vision emulation and spiking nueral networks for the purpose of serving as a proof of concept for more robust systems.
+
+Project Description:
+This project focuses on developing a simulation framework to support research in bionic vision and delay-based signal processing. The goal is to identify, prototype, and evaluate software and hardware co-simulation tools capable of modeling temporally encoded computation (where information is represented and manipulated through timing rather than voltage levels). You could begin by exploring existing simulation infrastructures such as modeling tools to determine which best supports delay-based logic and real-time visual input processing. Ideally we could implement testbenches that emulate retinal sensor inputs and downstream temporal computations to study accuracy, timing jitter, and scalability. The ultimate aim is to create a flexible, open simulation environment for exploring architectures that blend sensing and computation, paving the way for energy-efficient, real-time bionic vision prototypes. The goals would be measured by the realism, extensibility, and analytical capabilities of the resulting simulation platform.
