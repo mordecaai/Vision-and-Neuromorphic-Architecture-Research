@@ -1,4 +1,4 @@
-# Vision-and-Neuromorphic-Architecture-Research
+# Vision and Neuromorphic Computing/Architecture Research
 Project for Arch Lab under Prof Sherwood. The following code is a mix of computer vision emulation and spiking nueral networks for the purpose of serving as a proof of concept for more robust systems.
 
 Project Description:
