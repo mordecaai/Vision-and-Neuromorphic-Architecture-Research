@@ -7,16 +7,16 @@ import cv2
 import numpy as np
 from grid_window import GridWindow
 
-# ── CONFIG ────────────────────────────────────────────────────────────────────
-VIDEO_PATH   = "decoloredvideo.mp4"   # path to your video file
-GRID_COLS    = 48                      # must match resize width below
-GRID_ROWS    = 27                      # must match resize height below
-CELL_PX      = 14                      # pixel size of each grid cell
-FPS          = 12                      # playback speed
-LOOP         = False                   # set True to loop forever
+# CONFIG
+VIDEO_PATH   = "decoloredvideo.mp4"   # video file
+GRID_COLS    = 48                      # resized width 
+GRID_ROWS    = 27                      # resized height
+CELL_PX      = 14                      # grid cell pxiel size
+FPS          = 12
+LOOP         = False
 THRESHOLDS   = [42, 127, 212]          # grayscale quantization thresholds
-MAX_FRAMES   = None                    # set e.g. 100 to cap frame count
-# ─────────────────────────────────────────────────────────────────────────────
+MAX_FRAMES   = None                    # frame cap for  video
+# 
 
 
 def load_tensor(path, cols, rows, thresholds, max_frames=None):
@@ -29,8 +29,8 @@ def load_tensor(path, cols, rows, thresholds, max_frames=None):
         ret, frame = cap.read()
         if not ret:
             break
-        gray      = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        small     = cv2.resize(gray, (cols, rows), interpolation=cv2.INTER_AREA)
+        gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        small = cv2.resize(gray, (cols, rows), interpolation=cv2.INTER_AREA)
         quantized = np.digitize(small, thresholds).astype(np.uint8)
         frames.append(quantized)
         if max_frames and len(frames) >= max_frames:
@@ -40,7 +40,7 @@ def load_tensor(path, cols, rows, thresholds, max_frames=None):
     if not frames:
         raise ValueError("No frames extracted — check video path.")
 
-    tensor = np.stack(frames)                # (T, H, W)
+    tensor = np.stack(frames)  # (T, H, W)
     print(f"Loaded {tensor.shape[0]} frames  ({rows}x{cols} grid)")
     return tensor
 
