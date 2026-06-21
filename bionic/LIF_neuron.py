@@ -1,6 +1,6 @@
 import pyrtl
 
-def lif_neuron(total_incoming_current: pyrtl.WireVector, leak: int, threshold: int, bitwidth: int = 8) -> pyrtl.WireVector:
+def lif_neuron(total_incoming_current: pyrtl.WireVector, leak: int, threshold: int, bitwidth: int = 8, prefix: str = "") -> pyrtl.WireVector:
     """
     A Leaky Integrate-and-Fire (LIF) Neuron acting as a post-synaptic current bucket.
     
@@ -21,7 +21,7 @@ def lif_neuron(total_incoming_current: pyrtl.WireVector, leak: int, threshold: i
     """
     
     # 1. Membrane Voltage Accumulating and Serving as Memory (Capacitor)
-    v_mem = pyrtl.Register(bitwidth=bitwidth, name='v_mem')
+    v_mem = pyrtl.Register(bitwidth=bitwidth, name=f'{prefix}_v_mem')
 
     # 2. Leak (Track remaining voltage in capacitor after passive leak is applied)
     remaining_v = pyrtl.select(v_mem >= leak, v_mem - leak, pyrtl.Const(0, bitwidth))
@@ -31,6 +31,7 @@ def lif_neuron(total_incoming_current: pyrtl.WireVector, leak: int, threshold: i
     integrated_v = remaining_v + total_incoming_current
 
     # 4. Fire (The Action Potential)
+    spike_out = pyrtl.WireVector(1, name=f"{prefix}_spike_out")
     spike_out = integrated_v >= pyrtl.Const(threshold, bitwidth)
 
     # 5. Reset (Hard Reset to Zero)
