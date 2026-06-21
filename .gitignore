@@ -1,0 +1,20 @@
+# Environments
+.venv/
+venv/
+env/
+
+# Python Cache (Compiled bytecode that clutters your repo)
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# VS Code Settings (Keeps your personal IDE settings off GitHub)
+.vscode/
+
+# Jupyter Notebook Checkpoints (If you ever use them)
+.ipynb_checkpoints/
+
+# OS Generated Files
+.DS_Store
+Thumbs.db
