@@ -1,8 +1,8 @@
 import torch
 import torch.optim as optim
 import torch.nn.functional as F
-from EdgeDetectorSNN import EdgeDetectorSNN
-from TensorGenerator import synthetic_tensor
+from bionic.edge_detector_SNN import EdgeDetectorSNN
+from bionic.tensor_generator import synthetic_tensor
 
 # 1. Setup the Model and Optimizer
 model = EdgeDetectorSNN()
