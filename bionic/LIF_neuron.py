@@ -1,6 +1,6 @@
 import pyrtl
 
-def lif_neuron(total_incoming_current: pyrtl.WireVector, leak: int, threshold: int, bitwidth: int = 8, prefix: str = "") -> pyrtl.WireVector:
+def lif_neuron(excitatory_current: pyrtl.WireVector, inhibitory_current: pyrtl.WireVector, leak: int, threshold: int, bitwidth: int = 8, prefix: str = "") -> pyrtl.WireVector:
     """
     A Leaky Integrate-and-Fire (LIF) Neuron acting as a post-synaptic current bucket.
     
@@ -28,11 +28,15 @@ def lif_neuron(total_incoming_current: pyrtl.WireVector, leak: int, threshold: i
 
     # 3. Integration (The Input Current)
     # Add the  sum of all upstream synapses to our remaining voltage.
-    integrated_v = remaining_v + total_incoming_current
+    gross_v = remaining_v + excitatory_current
+    
+    # HARDWARE SAFETY: Prevent unsigned underflow by flooring at 0
+    will_underflow = inhibitory_current >= gross_v
+    integrated_v = pyrtl.select(will_underflow, pyrtl.Const(0, bitwidth), gross_v - inhibitory_current)
 
-    # 4. Fire (The Action Potential)
+    # 4. Dictate spike
     spike_out = pyrtl.WireVector(1, name=f"{prefix}_spike_out")
-    spike_out = integrated_v >= pyrtl.Const(threshold, bitwidth)
+    spike_out <<= integrated_v >= pyrtl.Const(threshold, bitwidth) 
 
     # 5. Reset (Hard Reset to Zero)
     v_mem.next <<= pyrtl.select(spike_out, pyrtl.Const(0, bitwidth), integrated_v)
